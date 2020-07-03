@@ -18,7 +18,7 @@ class FavoriteRepository(var dao: FavoriteDao) : FavoriteDao{
         dao.deleteAll()
     }
 
-    override suspend fun readAll(): LiveData<List<Article>> {
+    override fun readAll(): LiveData<List<Article>> {
         return dao.readAll()
     }
 

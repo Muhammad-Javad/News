@@ -41,10 +41,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_date" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_item_date" />
 
         <TextView
-            android:id="@+id/textview_description"
+            android:id="@+id/textview_item_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textview_item_title" />
 
         <TextView
-            android:id="@+id/textvew_author"
+            android:id="@+id/textvew_item_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -73,10 +73,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_description" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_item_description" />
 
         <TextView
-            android:id="@+id/textview_date"
+            android:id="@+id/textview_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

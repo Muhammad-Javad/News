@@ -5,6 +5,7 @@ import com.javadsh98.news.BuildConfig
 import com.javadsh98.news.di.databaseModule
 import com.javadsh98.news.di.networkModule
 import com.javadsh98.news.di.repositoryModule
+import com.javadsh98.news.di.viewmodelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -20,7 +21,7 @@ class MyApp : Application(){
 
         startKoin {
             androidContext(this@MyApp)
-            modules(databaseModule, repositoryModule, networkModule)
+            modules(databaseModule, repositoryModule, networkModule, viewmodelModule)
         }
 
     }

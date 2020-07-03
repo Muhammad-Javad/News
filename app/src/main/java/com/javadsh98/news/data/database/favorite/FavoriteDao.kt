@@ -20,6 +20,6 @@ interface FavoriteDao{
     suspend fun deleteAll()
 
     @Query("select * from Article")
-    suspend fun readAll(): LiveData<List<Article>>
+    fun readAll(): LiveData<List<Article>>
 
 }
