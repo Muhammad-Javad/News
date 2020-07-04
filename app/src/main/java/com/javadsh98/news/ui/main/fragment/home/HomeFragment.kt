@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.javadsh98.news.R
@@ -25,7 +26,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recyclerview_home.setHasFixedSize(true)
         recyclerview_home.layoutManager = LinearLayoutManager(requireContext())
         var adapter = HomeAdapter{
-            HomeFragmentDirections.actionHomeFragmentToDetailFragment(it, it.title)
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it, it.title)
+            findNavController().navigate(action)
         }
 
         recyclerview_home.adapter = adapter
