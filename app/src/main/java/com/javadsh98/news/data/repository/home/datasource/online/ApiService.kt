@@ -11,7 +11,7 @@ interface ApiService {
         @Query("qInTitle") title: String = "bitcoin"
         , @Query("apiKey") key: String = "e96921eddee141d38b6919340d7071f3"
         , @Query("page") page: Int
-        , @Query("pageSize") pageSize: Int = 10
+        , @Query("pageSize") pageSize: Int = 5
     ): ArticleResponse
 
 }

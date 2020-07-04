@@ -21,34 +21,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         recyclerview_home.setHasFixedSize(true)
         recyclerview_home.layoutManager = LinearLayoutManager(requireContext())
         var adapter = HomeAdapter()
         recyclerview_home.adapter = adapter
 
-        adapter.submitList(
-            listOf(
-                Article(
-                    0,
-                    "test",
-                    "title",
-                    "description",
-                    "url",
-                    "urlToImage",
-                    "1399",
-                    "content"
-                )
-            )
-        )
-
         viewmodel.news.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            var str = it.joinToString(limit = 5, separator = ",\n", prefix = "{\n", postfix = "\n}") {
-                "title : ${it.title}"
-            }
-            Toast.makeText(requireContext(), str, Toast.LENGTH_LONG).show()
-            Timber.i(str)
         })
 
     }

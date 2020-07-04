@@ -51,6 +51,8 @@ class HomeViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         itemView.textview_item_title.text = "${article.title}"
         itemView.textview_item_description.text = "${article.description}"
         itemView.textview_item_date.text = "${article.publishedAt}"
+        itemView.textvew_item_author.text = "${article.author}"
+
     }
 
     companion object {

@@ -28,6 +28,7 @@ class OnlineDataSourceImpl(val networkHelper: INetworkHelper) : IOnlineDataSourc
                 Timber.i("src : $str")
             }
             .collect {
+                news.clear()
                 news.addAll(it)
             }
 
