@@ -8,6 +8,7 @@ import com.javadsh98.news.data.model.Article
 import com.javadsh98.news.data.repository.home.IHomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: IHomeRepository) : ViewModel(){
 
@@ -22,7 +23,9 @@ class HomeViewModel(private val repository: IHomeRepository) : ViewModel(){
     private fun getNews(){
         viewModelScope.launch(context = Dispatchers.IO){
             val news = repository.getNews()
-            _news.value = news
+            withContext(Dispatchers.Main){
+                _news.value = news
+            }
         }
     }
 

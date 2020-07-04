@@ -15,7 +15,7 @@ class HomeRepository(val online: IOnlineDataSource
             offline.deleteAll()
 
             val articles = online.sendRequest()
-            offline.insertAll(articles)
+            offline.insertAll(super.checkNullData(articles))
 
             return articles
         }else{

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 class NetworkHelperImpl(val api: ApiService): INetworkHelper{
 
     override suspend fun getNews(page: Int) = flow<ArticleResponse> {
-        api.getBitcoinNews(page = page)
+        emit(api.getBitcoinNews(page = page))
     }
 
 }

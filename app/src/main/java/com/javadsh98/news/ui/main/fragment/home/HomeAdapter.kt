@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import coil.size.Precision
+import coil.size.Scale
 import com.javadsh98.news.R
 import com.javadsh98.news.data.model.Article
 import kotlinx.android.synthetic.main.item_article.view.*
@@ -38,7 +40,14 @@ class HomeAdapter : ListAdapter<Article, HomeViewHolder>(diff) {
 class HomeViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
 
     fun onBind(article: Article) {
-        itemView.imageview_item_image.load(article.urlToImage)
+        if (article.urlToImage != null)
+            itemView.imageview_item_image
+                .load(article.urlToImage){
+                    placeholder(R.drawable.img_item_preload)
+                    error(R.drawable.img_item_preload)
+                    precision(Precision.EXACT)
+                    scale(Scale.FILL)
+                }
         itemView.textview_item_title.text = "${article.title}"
         itemView.textview_item_description.text = "${article.description}"
         itemView.textview_item_date.text = "${article.publishedAt}"
@@ -47,7 +56,12 @@ class HomeViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
     companion object {
         fun create(parent: ViewGroup): HomeViewHolder {
             return HomeViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_article, parent, false)
+                LayoutInflater
+                    .from(parent.context).inflate(
+                        R.layout.item_article
+                        , parent
+                        , false
+                    )
             )
         }
     }
