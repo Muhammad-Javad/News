@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,11 +14,12 @@ import coil.size.Scale
 import com.javadsh98.news.R
 import com.javadsh98.news.data.model.Article
 import kotlinx.android.synthetic.main.item_article.view.*
+typealias OnItemClickListener = (Article) -> Unit
 
-class HomeAdapter : ListAdapter<Article, HomeViewHolder>(diff) {
+class HomeAdapter(val onItemClickListener: OnItemClickListener) : ListAdapter<Article, HomeViewHolder>(diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        return HomeViewHolder.create(parent)
+        return HomeViewHolder.create(parent, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
@@ -37,7 +39,7 @@ class HomeAdapter : ListAdapter<Article, HomeViewHolder>(diff) {
     }
 }
 
-class HomeViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
+class HomeViewHolder(itemview: View, val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemview) {
 
     fun onBind(article: Article) {
         if (article.urlToImage != null)
@@ -53,10 +55,14 @@ class HomeViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         itemView.textview_item_date.text = "${article.publishedAt}"
         itemView.textvew_item_author.text = "${article.author}"
 
+        //listener
+        itemView.cardview_item.setOnClickListener {
+            onItemClickListener.invoke(article)
+        }
     }
 
     companion object {
-        fun create(parent: ViewGroup): HomeViewHolder {
+        fun create(parent: ViewGroup, onItemClickListener: OnItemClickListener): HomeViewHolder {
             return HomeViewHolder(
                 LayoutInflater
                     .from(parent.context).inflate(
@@ -64,6 +70,7 @@ class HomeViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
                         , parent
                         , false
                     )
+                , onItemClickListener
             )
         }
     }
