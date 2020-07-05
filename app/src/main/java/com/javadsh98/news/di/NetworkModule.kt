@@ -18,7 +18,7 @@ val networkModule = module {
 
     single<OkHttpClient> {
         val logger = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
+            .setLevel(HttpLoggingInterceptor.Level.BASIC)
 
         OkHttpClient.Builder()
             .addInterceptor(logger)
@@ -26,34 +26,6 @@ val networkModule = module {
     }
 
     single<ApiService> {
-//        val gson = GsonBuilder().registerTypeAdapter(ArticleResponse::class.java,
-//            object : JsonDeserializer<ArticleResponse> {
-//                override fun deserialize(
-//                    json: JsonElement?,
-//                    typeOfT: Type?,
-//                    context: JsonDeserializationContext?
-//                ): ArticleResponse {
-//                    val respose = json?.asJsonObject
-//                    val articles = respose?.getAsJsonArray("articles")
-//
-//                    val articleList = mutableListOf<Article>()
-//                    for (i in 0 until articles!!.size()){
-//                        var article = articles.get(i).asJsonObject
-//                        articleList.add(
-//                            Article(id = i
-//                            , author = article.get("author").asString
-//                            , content = article.get("content").toString() ?: ""
-//                            , description = article.get("description").asString
-//                                , urlToImage = article.get("urlToImage").toString() ?: ""
-//                            , publishedAt = article.get("publishedAt").asString
-//                            , title = article.get("title").asString
-//                            , url = article.get("url").asString )
-//                        )
-//                    }
-//                    return ArticleResponse(articleList)
-//                }
-//            }).create()
-
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://newsapi.org")

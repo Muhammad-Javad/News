@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         NavigationUI.setupWithNavController(toolbar_main, controller, appBarConfiguration)
 
         navigationview_main.setNavigationItemSelectedListener(this)
+        navigationview_main.menu.getItem(0).isChecked = true
 
     }
 
