@@ -23,6 +23,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         recyclerview_home.setHasFixedSize(true)
         recyclerview_home.layoutManager = LinearLayoutManager(requireContext())
         var adapter = HomeAdapter{

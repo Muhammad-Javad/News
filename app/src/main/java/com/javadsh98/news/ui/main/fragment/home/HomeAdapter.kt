@@ -12,8 +12,11 @@ import coil.api.load
 import coil.size.Precision
 import coil.size.Scale
 import com.javadsh98.news.R
+import com.javadsh98.news.common.rawDateToPretty
 import com.javadsh98.news.data.model.Article
 import kotlinx.android.synthetic.main.item_article.view.*
+import org.ocpsoft.prettytime.PrettyTime
+
 typealias OnItemClickListener = (Article) -> Unit
 
 class HomeAdapter(val onItemClickListener: OnItemClickListener) : ListAdapter<Article, HomeViewHolder>(diff) {
@@ -51,9 +54,8 @@ class HomeViewHolder(itemview: View, val onItemClickListener: OnItemClickListene
                     scale(Scale.FILL)
                 }
         itemView.textview_item_title.text = "${article.title}"
-        itemView.textview_item_description.text = "${article.description}"
-        itemView.textview_item_date.text = "${article.publishedAt}"
-        itemView.textvew_item_author.text = "${article.author}"
+        itemView.textview_item_date.text = "${rawDateToPretty(article.publishedAt)}"
+        itemView.textvew_item_author.text = "${article.author ?: ""}"
 
         //listener
         itemView.cardview_item.setOnClickListener {

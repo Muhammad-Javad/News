@@ -15,12 +15,20 @@
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/security"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="my_metadata"
+            android:value="my_value"/>
+
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="my_metadata"
+                android:value="my_value_in_activity"/>
         </activity>
     </application>
 
