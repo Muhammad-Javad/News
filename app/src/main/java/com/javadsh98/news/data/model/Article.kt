@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 data class Article(
     @Expose(serialize = false, deserialize = false)
-    @PrimaryKey(autoGenerate = true) var id : Int
+    @PrimaryKey(autoGenerate = true) var id: Int
     , val author: String
     , val title: String
     , val description: String
@@ -18,4 +18,32 @@ data class Article(
     , val urlToImage: String = ""
     , val publishedAt: String
     , val content: String = ""
-): Parcelable
+) : Parcelable {
+
+    override fun equals(other: Any?): Boolean =
+        if (other is Article)
+            EssentialData(other) == EssentialData(this)
+        else
+            false
+
+}
+
+private data class EssentialData(
+    val author: String
+    , val title: String
+    , val description: String
+    , val url: String
+    , val urlToImage: String
+    , val publishedAt: String
+    , val content: String
+) {
+    constructor(article: Article) : this(
+        article.author ?: ""
+        , article.title ?: ""
+        , article.description ?: ""
+        , article.url ?: ""
+        , article.urlToImage ?: ""
+        , article.publishedAt ?: ""
+        , article.content ?: ""
+    )
+}
