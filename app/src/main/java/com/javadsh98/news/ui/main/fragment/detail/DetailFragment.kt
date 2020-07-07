@@ -17,6 +17,7 @@ import com.javadsh98.news.common.rawDateToPretty
 import com.javadsh98.news.data.model.Article
 import com.javadsh98.news.ui.main.fragment.favorite.FavoriteViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.item_article.view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -80,19 +81,12 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private fun loadImaegAndTransition() {
 
-        imageview_detail.transitionName = article.title
-
-        val request = LoadRequest.Builder(requireContext())
-            .data(article.urlToImage)
-            .error(R.drawable.img_item_preload)
-            .target(onError = {
-                Timber.i("onerror")
-            }, onSuccess = {
-                imageview_detail.load(it)
-                Timber.i("onsuccess")
-            }).build()
-
-        imageLoader.execute(request)
+        imageview_detail.load(article.urlToImage){
+            placeholder(R.drawable.img_item_preload)
+            error(R.drawable.img_item_preload)
+            precision(Precision.EXACT)
+            scale(Scale.FILL)
+        }
     }
 
     private fun updateFavIcon() {

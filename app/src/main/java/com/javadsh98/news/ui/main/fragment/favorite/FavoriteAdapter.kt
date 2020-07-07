@@ -54,17 +54,13 @@ class FavoriteViewHolder(itemview: View, val onItemClickListener: OnItemClickLis
 
     fun onBind(article: Article) {
         if (article.urlToImage != null) {
-            val request = LoadRequest.Builder(itemView.context)
-                .data(article.urlToImage)
-                .error(R.drawable.img_item_preload)
-                .target(onError = {
-                    Timber.i("onerror")
-                }, onSuccess = {
-                    itemView.imageview_item_image.load(it)
-                    Timber.i("onsuccess")
-                }).build()
 
-            imageLoader.execute(request)
+            itemView.imageview_item_image.load(article.urlToImage){
+                placeholder(R.drawable.img_item_preload)
+                error(R.drawable.img_item_preload)
+                precision(Precision.EXACT)
+                scale(Scale.FILL)
+            }
         }
         itemView.textview_item_title.text = "${article.title}"
         itemView.textview_item_date.text = "${rawDateToPretty(article.publishedAt)}"
