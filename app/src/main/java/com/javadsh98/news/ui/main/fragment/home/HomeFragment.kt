@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionInflater
 import com.javadsh98.news.R
 import com.javadsh98.news.data.model.Article
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -24,12 +26,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
 
-
         recyclerview_home.setHasFixedSize(true)
-        recyclerview_home.layoutManager = LinearLayoutManager(requireContext())
-        var adapter = HomeAdapter{
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it, it.title)
-            findNavController().navigate(action)
+        val layoutManager = LinearLayoutManager(requireContext())
+        recyclerview_home.layoutManager = layoutManager
+        var adapter = HomeAdapter { article ->
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToDetailFragment(article, article.title)
+            findNavController()
+                .navigate(
+                    action
+                )
         }
 
         recyclerview_home.adapter = adapter

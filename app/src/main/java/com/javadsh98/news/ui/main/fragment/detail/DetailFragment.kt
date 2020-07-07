@@ -6,7 +6,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionInflater
+import coil.ImageLoader
 import coil.api.load
+import coil.request.LoadRequest
 import coil.size.Precision
 import coil.size.Scale
 import com.javadsh98.news.R
@@ -14,6 +17,7 @@ import com.javadsh98.news.common.rawDateToPretty
 import com.javadsh98.news.data.model.Article
 import com.javadsh98.news.ui.main.fragment.favorite.FavoriteViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -25,6 +29,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     val viewModel: FavoriteViewModel by viewModel()
     var favorites: List<Article> = listOf()
+
+    val imageLoader: ImageLoader by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -43,12 +49,11 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun setupListener() {
-        imageview_detail_favorite.setOnClickListener{
-            if(isFavorite()){
-                 viewModel.delete(equivalentInFavorites())
+        imageview_detail_favorite.setOnClickListener {
+            if (isFavorite()) {
+                viewModel.delete(equivalentInFavorites())
                 Timber.i("delete")
-            }
-            else{
+            } else {
                 viewModel.insert(article)
                 Timber.i("insert")
             }
@@ -66,17 +71,28 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private fun setupViews() {
         article = args.article
         textview_detail_author.text = "${article.author ?: ""}"
-        textview_detail_title.text = "${article.title?: ""}"
+        textview_detail_title.text = "${article.title ?: ""}"
         textview_detail_date.text = "${rawDateToPretty(article.publishedAt)}"
         textview_detail_description.text = "${article.description ?: ""}"
-        imageview_detail
-            .load(article.urlToImage) {
-                placeholder(R.drawable.img_item_preload)
-                error(R.drawable.img_item_preload)
-                precision(Precision.EXACT)
-                scale(Scale.FILL)
-            }
 
+        loadImaegAndTransition()
+    }
+
+    private fun loadImaegAndTransition() {
+
+        imageview_detail.transitionName = article.title
+
+        val request = LoadRequest.Builder(requireContext())
+            .data(article.urlToImage)
+            .error(R.drawable.img_item_preload)
+            .target(onError = {
+                Timber.i("onerror")
+            }, onSuccess = {
+                imageview_detail.load(it)
+                Timber.i("onsuccess")
+            }).build()
+
+        imageLoader.execute(request)
     }
 
     private fun updateFavIcon() {
@@ -95,10 +111,11 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                 && filteredFavorite.size == 1
     }
 
-    private fun equivalentInFavorites(): Article{
+    private fun equivalentInFavorites(): Article {
         val filteredFavorite = favorites
             .filter { article.equals(it) }
         return filteredFavorite[0]
     }
+
 
 }

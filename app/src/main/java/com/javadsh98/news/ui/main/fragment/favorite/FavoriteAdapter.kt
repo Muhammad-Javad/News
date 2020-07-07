@@ -8,14 +8,19 @@ import android.widget.AdapterView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.ImageLoader
 import coil.api.load
+import coil.request.LoadRequest
 import coil.size.Precision
 import coil.size.Scale
 import com.javadsh98.news.R
 import com.javadsh98.news.common.rawDateToPretty
 import com.javadsh98.news.data.model.Article
 import kotlinx.android.synthetic.main.item_article.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import org.ocpsoft.prettytime.PrettyTime
+import timber.log.Timber
 
 typealias OnItemClickListener = (Article) -> Unit
 
@@ -42,17 +47,25 @@ class FavoriteAdapter(val onItemClickListener: OnItemClickListener) : ListAdapte
     }
 }
 
-class FavoriteViewHolder(itemview: View, val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemview) {
+class FavoriteViewHolder(itemview: View, val onItemClickListener: OnItemClickListener)
+    : RecyclerView.ViewHolder(itemview) , KoinComponent{
+
+    val imageLoader: ImageLoader by inject()
 
     fun onBind(article: Article) {
-        if (article.urlToImage != null)
-            itemView.imageview_item_image
-                .load(article.urlToImage){
-                    placeholder(R.drawable.img_item_preload)
-                    error(R.drawable.img_item_preload)
-                    precision(Precision.EXACT)
-                    scale(Scale.FILL)
-                }
+        if (article.urlToImage != null) {
+            val request = LoadRequest.Builder(itemView.context)
+                .data(article.urlToImage)
+                .error(R.drawable.img_item_preload)
+                .target(onError = {
+                    Timber.i("onerror")
+                }, onSuccess = {
+                    itemView.imageview_item_image.load(it)
+                    Timber.i("onsuccess")
+                }).build()
+
+            imageLoader.execute(request)
+        }
         itemView.textview_item_title.text = "${article.title}"
         itemView.textview_item_date.text = "${rawDateToPretty(article.publishedAt)}"
         itemView.textvew_item_author.text = "${article.author ?: ""}"
