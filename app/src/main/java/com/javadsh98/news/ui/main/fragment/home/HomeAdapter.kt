@@ -52,9 +52,7 @@ class HomeAdapter(val onItemClickListener: OnItemClickListener) :
 class HomeViewHolder(
     itemview: View
     , val onItemClickListener: OnItemClickListener
-) : RecyclerView.ViewHolder(itemview), KoinComponent {
-
-    val imageLoader: ImageLoader by inject()
+) : RecyclerView.ViewHolder(itemview) {
 
     fun onBind(article: Article) {
         if (article.urlToImage != null) {

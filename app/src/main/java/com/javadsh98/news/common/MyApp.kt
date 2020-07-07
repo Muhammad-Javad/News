@@ -23,7 +23,6 @@ class MyApp : Application() {
                 , repositoryModule
                 , networkModule
                 , viewmodelModule
-                , imageLoaderModule
             )
         }
 
