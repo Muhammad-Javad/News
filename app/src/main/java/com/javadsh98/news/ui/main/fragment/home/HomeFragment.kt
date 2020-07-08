@@ -12,6 +12,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.javadsh98.news.R
+import com.javadsh98.news.common.hide
+import com.javadsh98.news.common.show
 import com.javadsh98.news.data.model.Article
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -34,6 +36,8 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressbar_home_loading.show()
+
         setHasOptionsMenu(true)
         recyclerview_home.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext())
@@ -42,6 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         recyclerview_home.adapter = adapter
 
         viewmodel.news.observe(viewLifecycleOwner, Observer {
+            progressbar_home_loading.hide()
             articles = it
             adapter.submitList(it)
         })

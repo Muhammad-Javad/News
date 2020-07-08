@@ -26,7 +26,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite), SearchView.OnQuer
         setHasOptionsMenu(true)
         setupRecyclerview()
         getFavorites()
-        
+
     }
 
     private fun getFavorites() {
