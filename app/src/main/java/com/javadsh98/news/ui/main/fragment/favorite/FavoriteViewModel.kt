@@ -11,6 +11,9 @@ class FavoriteViewModel(val repository: FavoriteRepository) : ViewModel() {
     val favorites: LiveData<List<Article>>
         get() = repository.readAll()
 
+    lateinit var searchedFavorites: LiveData<List<Article>>
+
+
     fun insert(article: Article) {
         val newArticle = Article(
             article.id
@@ -37,6 +40,11 @@ class FavoriteViewModel(val repository: FavoriteRepository) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAll()
         }
+    }
+
+    fun readByQuery(query: String): LiveData<List<Article>>{
+        searchedFavorites = repository.readByQuery(query)
+        return searchedFavorites
     }
 
 }

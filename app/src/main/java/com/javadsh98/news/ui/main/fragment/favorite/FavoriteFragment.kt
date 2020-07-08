@@ -2,6 +2,7 @@ package com.javadsh98.news.ui.main.fragment.favorite
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -12,8 +13,9 @@ import com.javadsh98.news.common.show
 import com.javadsh98.news.ui.main.fragment.home.HomeFragmentDirections
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
-class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
+class FavoriteFragment : Fragment(R.layout.fragment_favorite), SearchView.OnQueryTextListener {
 
     val viewmodel: FavoriteViewModel by viewModel()
     lateinit var adapter: FavoriteAdapter
@@ -24,11 +26,12 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         setHasOptionsMenu(true)
         setupRecyclerview()
         getFavorites()
-
+        
     }
 
     private fun getFavorites() {
         viewmodel.favorites.observe(viewLifecycleOwner, Observer {
+            Timber.i("all fav")
             if(it.isEmpty()){
                 textview_favorite_empty_list.show()
             }else {
@@ -56,8 +59,34 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             viewmodel.deleteAll()
             false
         }
+        val sv = menu.findItem(R.id.menu_favorite_search)
+        val searchview = sv.actionView as SearchView
+        searchview.setOnQueryTextListener(this)
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        query?.let {
+            if (it.isEmpty()){
+                getFavorites()
+            }else{
+                getSearchedFavorites(query)
+            }
+        }
+        return false
+    }
+
+    private fun getSearchedFavorites(query: String) {
+        viewmodel.readByQuery(query).observe(viewLifecycleOwner, Observer {
+            if(it != null) {
+                adapter.submitList(it)
+            }
+            Timber.i("search")
+        })
+    }
 
 
 }

@@ -22,4 +22,8 @@ class FavoriteRepository(var dao: FavoriteDao) : FavoriteDao{
         return dao.readAll()
     }
 
+    override fun readByQuery(query: String): LiveData<List<Article>> {
+        return dao.readByQuery(query)
+    }
+
 }

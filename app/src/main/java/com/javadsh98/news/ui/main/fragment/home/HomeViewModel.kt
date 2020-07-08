@@ -29,4 +29,9 @@ class HomeViewModel(private val repository: IHomeRepository) : ViewModel(){
         }
     }
 
+    fun searchInList(query: String, articles: List<Article>)=
+        articles.filter {
+            it.title.contains(query, true)
+        }
+
 }

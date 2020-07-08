@@ -19,4 +19,7 @@ interface FavoriteDao{
     @Query("select * from Article")
     fun readAll(): LiveData<List<Article>>
 
+    @Query("select * from Article where title like '%' || :query || '%'")
+    fun readByQuery(query: String): LiveData<List<Article>>
+
 }
